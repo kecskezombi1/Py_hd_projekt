@@ -61,7 +61,7 @@ class App(tk.Tk):
         btnstart.pack(padx=10,pady=10,side="left")
         btnstart.place(x=10,y=300,width=100,height=30)
         #lista
-        table1=tk.Listbox(root,)
+        table1=tk.Listbox(root)
         table1.pack(padx=10,pady=10,side="left")
         table1.place(x=10,y=100,width=400,height=200)
         table1.bind("<Double-Button-1>", recept_selected)
