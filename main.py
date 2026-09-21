@@ -20,6 +20,7 @@ class App(tk.Tk):
         def sajat_recept():
             table1.delete("0", "end")
             recept_o=[]
+            btnstart.config(state="disabled")
             for recept in recept_o:
                 table1.insert(tk.END, recept)
 
