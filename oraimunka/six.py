@@ -10,21 +10,19 @@ class Kockadobas:
         self.root.title("Kockázás")
         self.eredmenyek = {i: 0 for i in range(1, 7)}
 
-        self.cim_cimke = ttk.Label(
-            root, text="Kockajáték", font=("Arial", 16, "bold")
-        )
-        self.cim_cimke.grid(row=1, column=0, padx=10, pady=10)
+        self.cim_cimke = ttk.Label(root, text="Kockajáték", font=("Arial", 16, "bold"))
+        self.cim_cimke.grid(row=1, column=1, padx=10, pady=10)
 
         self.dobas_szam = tk.StringVar(value="10")
         self.dobas_szam_be = ttk.Entry( root, textvariable=self.dobas_szam  )
-        self.dobas_szam_be.grid(row=1, column=1)
+        self.dobas_szam_be.grid(row=2, column=1)
 
         # button
         self.btn = ttk.Button(root, text="Dobás", command=self.dobas)
-        self.btn.grid(row=2, column=1)
+        self.btn.grid(row=2, column=2)
 
         self.exitbtn = ttk.Button(root, text="Exit", command=root.destroy)
-        self.exitbtn.grid(row=2, column=0)
+        self.exitbtn.grid(row=5, column=3)
 
         self.dobas_eredmenye = ttk.Label(root, text="Eredmény", font=("Arial", 20, "bold"))
         self.dobas_eredmenye.grid( row=3, column=1, padx=10, pady=10)
