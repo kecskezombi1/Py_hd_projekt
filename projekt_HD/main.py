@@ -15,7 +15,7 @@ class Begyujtas:
         style = ttk.Style()
         style.configure("cim.TLabel",foreground="white",background="slategray", font=("Arial", 15, "bold"),anchor="center",padding=15)
 
-        self.cim=ttk.Label(self.root,text="Begyujtás",style="cim.TLabel")
+        self.cim=ttk.Label(self.root,text="Hőfigyelő",style="cim.TLabel")
         self.cim.grid(row=0,column=0,columnspan=2,sticky="ew")
 
 

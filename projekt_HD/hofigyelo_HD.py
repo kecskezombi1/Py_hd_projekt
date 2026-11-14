@@ -2,6 +2,10 @@ import asyncio
 import logging
 import math
 import threading
+import time
+from encodings import utf_8
+import winsound
+import json
 from pathlib import Path
 from tkinter import ttk, messagebox
 import main
@@ -66,8 +70,49 @@ class Begyujtas(main.Begyujtas):
 
         self.root.protocol("WM_DELETE_WINDOW",self.ablak_bezarasa)
 
+        self.json_fajl=Path(__file__).with_name("hofigyelo.json")
+        self.saved_data=self.adatok_betoltese()
+
+    def adatok_betoltese(self):
+        if self.json_fajl.exists():
+            try:
+                with open(self.json_fajl,"r",encoding=utf_8) as f:
+                    adatok=json.load(f)
+                if(isinstance(adatok,dict)and isinstance(adatok.get("futesek"),list)):
+                    return  adatok
+            except (OSError,ValueError):
+                logging.exception("JSON betöltési hiba")
+        return {
+            "beallitasok": {
+                "ertesitesi_perc": 15
+            },
+            "futesek": []
+        }
+
+    def adatok_mentese(self):
+        try:
+            temp = self.json_fajl.with_suffix(".tmp")
+
+            with open(temp, "w", encoding="utf-8") as f:
+                json.dump(
+                    self.mentett_adatok,
+                    f,
+                    ensure_ascii=False,
+                    indent=4
+                )
+
+            temp.replace(self.json_fajl)
+
+        except OSError:
+            logging.exception("JSON mentési hiba")
+            messagebox.showerror(
+                "Mentési hiba",
+                "Nem sikerült az adatok mentése.",
+                parent=self.root
+            )
+
     def folytatas(self):
-        if not self.aktiv or not self.ellenorzesre_var:
+        if not self.active or not self.ellenorzesre_var:
             return
         adatok = self.adatok_beolvasasa()
         if adatok is None:
@@ -103,6 +148,8 @@ class Begyujtas(main.Begyujtas):
             messagebox.showerror("Hibás adat","Adj meg érvényes hőmérsékleteket!",parent=self.root)
             return
 
+    def hangjelzes(self):
+        winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
 
     def start_btn_clicked(self):
         if self.active:
@@ -141,11 +188,58 @@ class Begyujtas(main.Begyujtas):
 
         self.uj_idozites()
 
-    def end_btn_clicked(self):
-        if not self.aktiv:
+    def uj_idozites(self):
+        self.next_time=(time.monotonic()+self.nofi_minute*60)
+        self.idozito()
+
+    def idozito(self):
+        self.timer_id=None
+
+        if not self.active or self.check_wait:
             return
 
-        self.aktiv = False
+        self.hatralevo=max(
+            0,
+            math.ceil(
+                self.next_time - time.monotonic()
+            )
+        )
+
+        perc, masodperc=divmod(self.hatralevo,60)
+
+        self.timer_label.config(
+            text=f"Hátralévő idő: {perc:02d}:{masodperc:02d}"
+        )
+        if self.hatralevo == 0:
+            self.ellenorzes_szukseges()
+            return
+
+        self.timer_id = self.root.after(
+            250,
+            self.idozito
+        )
+
+        def ellenorzes_szukseges(self):
+            self.ellenorzesre_var = True
+
+            self.timer_label.config(text="Ellenőrzés szükséges!")
+
+            self.status_label.config(text="Állapot: Új adatokra vár")
+
+            for entry in (self.vizho_megadas,self.hofok_megadas):
+                entry.config(state="normal")
+                entry.delete(0, tk.END)
+
+            self.folytatas_btn.config(state="normal")
+            self.naplozas("Ellenőrzési emlékeztető lejárt")
+            self.ertesites()
+            self.hangjelzes()
+
+    def end_btn_clicked(self):
+        if not self.active or self.check_wait:
+            return
+
+        self.active = False
         self.ellenorzesre_var = False
 
         if self.timer_id is not None:
@@ -175,7 +269,55 @@ class Begyujtas(main.Begyujtas):
 
         self.notification_loop.close()
 
+    def ellenorzes_szukseges(self):
+        self.ellenorzesre_var = True
 
+        self.timer_label.config(
+            text="Ellenőrzés szükséges!"
+        )
+
+        self.status_label.config(
+            text="Állapot: Új adatokra vár"
+        )
+
+        # A korábbi hőmérsékletek törlése
+        for entry in (
+                self.vizho_megadas,
+                self.hofok_megadas
+        ):
+            entry.config(state="normal")
+            entry.delete(0, tk.END)
+
+        self.folytatas_btn.config(state="normal")
+
+        self.naplozas(
+            "Ellenőrzési emlékeztető lejárt"
+        )
+
+        self.ertesites()
+
+    def ertesites(self):
+        async def send():
+            await self.notifer.send(
+                title="Hőfigyelő – Ellenőrzés",
+                message=("Eltelt a beállított idő! " "Ellenőrizd a kazánt, majd add meg ""az aktuális hőmérsékleteket.")
+            )
+            self.hangjelzes()
+
+        def hiba_ellenorzese(future):
+            try:
+                future.result()
+            except Exception:
+                logging.exception( "Nem sikerült elküldeni az értesítést")
+
+        def utemezes():
+            future = asyncio.run_coroutine_threadsafe(send(),self.notification_loop)
+            future.add_done_callback(hiba_ellenorzese)
+
+        if self.notification_ready.is_set():
+            utemezes()
+        else:
+            logging.warning("Az értesítési rendszer még nem áll készen")
 
     def naplozas(self,text):
         logging.info(f"naplozas | {text}")
