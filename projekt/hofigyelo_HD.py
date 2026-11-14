@@ -4,7 +4,7 @@ import math
 import threading
 from pathlib import Path
 from tkinter import ttk, messagebox
-import main_app
+import main
 import tkinter as tk
 from desktop_notifier import DesktopNotifier
 
@@ -13,7 +13,7 @@ class Begyujtas:
     def __init__(self,root):
         self.root=root
 
-class Begyujtas(main_app.Begyujtas):
+class Begyujtas(main.Begyujtas):
     def __init__(self, root):
         super().__init__(root)
 
@@ -142,14 +142,29 @@ class Begyujtas(main_app.Begyujtas):
         self.uj_idozites()
 
     def end_btn_clicked(self):
-        messagebox.showinfo(message="Elvégezte a begyújtást",icon="warning")
-        self.end_btn.config(state="disabled")
+        if not self.aktiv:
+            return
+
+        self.aktiv = False
+        self.ellenorzesre_var = False
+
+        if self.timer_id is not None:
+            self.root.after_cancel(self.timer_id)
+            self.timer_id = None
+
         self.start_btn.config(state="normal")
+        self.end_btn.config(state="disabled")
         self.folytatas_btn.config(state="disabled")
 
+        self.ido_megadas.config(state="normal")
         self.vizho_megadas.config(state="normal")
         self.hofok_megadas.config(state="normal")
-        self
+
+        self.timer_label.config(text="Figyelés leállítva")
+        self.status_label.config(text="Állapot: Befejezve")
+        self.naplozas("Figyelés befejezve")
+
+        messagebox.showinfo("Hőfigyelő","A figyelés befejeződött.",parent=self.root)
 
     def notification_worker(self):
         asyncio.set_event_loop(asyncio.new_event_loop())
