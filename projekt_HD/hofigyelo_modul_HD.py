@@ -200,24 +200,17 @@ class Begyujtas(main.Begyujtas):
 
         self.hatralevo=max(
             0,
-            math.ceil(
-                self.next_time - time.monotonic()
-            )
+            math.ceil(self.next_time - time.monotonic())
         )
 
         perc, masodperc=divmod(self.hatralevo,60)
 
-        self.timer_label.config(
-            text=f"Hátralévő idő: {perc:02d}:{masodperc:02d}"
-        )
+        self.timer_label.config(text=f"Hátralévő idő: {perc:02d}:{masodperc:02d}")
         if self.hatralevo == 0:
             self.ellenorzes_szukseges()
             return
 
-        self.timer_id = self.root.after(
-            250,
-            self.idozito
-        )
+        self.timer_id = self.root.after(250, self.idozito)
 
         def ellenorzes_szukseges(self):
             self.ellenorzesre_var = True
