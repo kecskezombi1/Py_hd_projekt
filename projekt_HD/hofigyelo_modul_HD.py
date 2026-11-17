@@ -17,9 +17,9 @@ class Begyujtas:
     def __init__(self,root):
         self.root=root
 
-class Begyujtas(main.Begyujtas):
-    def __init__(self, root):
-        super().__init__(root)
+# class Begyujtas(main.Begyujtas):
+    # def __init__(self, root):
+        # super().__init__(root)
 
     def adatok_betoltese(self):
         if self.json_fajl.exists():
