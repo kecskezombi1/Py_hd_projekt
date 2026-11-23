@@ -13,9 +13,9 @@ import main
 
 logging.basicConfig(filename=Path(__file__).with_name("hofigyelo.log") ,level=logging.INFO, format='%(asctime)s : %(message)s',encoding='utf-8')
 
-# class Begyujtas(main.Begyujtas):
-    # def __init__(self, root):
-        # super().__init__(root)
+class Begyujtas(main.Begyujtas):
+    def __init__(self, root):
+        super().__init__(root)
 
     def adatok_betoltese(self):
         if self.json_fajl.exists():
