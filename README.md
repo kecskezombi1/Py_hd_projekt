@@ -100,9 +100,4 @@ python main.py
 ## Eseménynapló és továbbfejlesztés
 
 A `logging` modul a `hofigyelo.log` fájlban rögzíti többek között a figyelés indítását, az ellenőrzési értesítéseket, a megadott hőmérsékleteket és a leállítást.
-
-Lehetséges továbbfejlesztések: automatikusan létrejövő JSON-adatfájl, fűtési alkalmak összesítése, statisztikák és hőmérsékleti grafikonok.
-
-## Biztonsági megjegyzés
-
-A Hőfigyelő **emlékeztető**, nem automatikus mérő- vagy biztonsági rendszer. Nem érzékeli a kazán tényleges állapotát, és nem helyettesíti a személyes ellenőrzést, a gyártói előírásokat vagy a megfelelő biztonsági berendezéseket. Az alapértelmezett 15 perces időköz nem jelent biztonságos ellenőrzési gyakoriságot minden kazánhoz.
+zést, a gyártói előírásokat vagy a megfelelő biztonsági berendezéseket. Az alapértelmezett 15 perces időköz nem jelent biztonságos ellenőrzési gyakoriságot minden kazánhoz.
