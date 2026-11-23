@@ -78,7 +78,7 @@ A `main.py` egy `Begyujtas` nevű alaposztályt tartalmaz, amely létrehozza a g
 A külső csomag telepítése:
 
 ```bash
-pip install desktop-notifier
+python -m pip install desktop-notifier
 ```
 
 Indítás a projekt mappájában:
