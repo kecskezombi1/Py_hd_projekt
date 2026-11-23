@@ -22,7 +22,9 @@ class Begyujtas(main.Begyujtas):
             try:
                 with open(self.json_fajl,"r",encoding=utf_8) as f:
                     adat=json.load(f)
-                if(isinstance(adat,dict)and isinstance(adat.get("futesek"),list)):
+                if(isinstance(adat,dict)
+                        and isinstance(adat.get("futesek"),list)
+                ):
                     return  adat
             except (OSError,ValueError):
                 logging.exception("JSON betöltési hiba")
@@ -36,7 +38,6 @@ class Begyujtas(main.Begyujtas):
     def saved_data(self):
         try:
             temp = self.json_fajl.with_suffix(".tmp")
-
             with open(temp, "w", encoding="utf-8") as f:
                 json.dump(self.saved_data,f,ensure_ascii=False,indent=4)
             temp.replace(self.json_fajl)
@@ -141,15 +142,10 @@ class Begyujtas(main.Begyujtas):
 
     def idozito(self):
         self.timer_id=None
-
         if not self.active or self.check_wait:
             return
 
-        self.hatralevo=max(
-            0,
-            math.ceil(self.next_time - time.monotonic())
-        )
-
+        self.hatralevo=max( 0,math.ceil(self.next_time - time.monotonic()))
         perc, masodperc=divmod(self.hatralevo,60)
 
         self.timer_label.config(text=f"Hátralévő idő: {perc:02d}:{masodperc:02d}")
@@ -257,7 +253,6 @@ class Begyujtas(main.Begyujtas):
         else:
             logging.warning("Az értesítési rendszer még nem áll készen")
 
-
     def naplozas(self,text):
         logging.info(f"naplozas | {text}")
 
@@ -275,8 +270,3 @@ class Begyujtas(main.Begyujtas):
             self.notification_loop.call_soon_threadsafe(self.notification_loop.stop)
 
         self.root.destroy()
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Begyujtas(root)
-    root.mainloop()

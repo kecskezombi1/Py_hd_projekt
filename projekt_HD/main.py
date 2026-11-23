@@ -1,7 +1,6 @@
 import asyncio
 import threading
 import tkinter as tk
-from pathlib import Path
 from tkinter import ttk
 import hofigyelo_modul_HD as hd
 
@@ -52,7 +51,6 @@ class Begyujtas:
         self.ido_megadas.set(15)
         self.ido_megadas.grid(row=5,column=1,padx=10,pady=8)
 
-
         self.timer_label = tk.Label(self.root,text="Hátralévő idő: 15:00", font=("Arial", 18, "bold"))
         self.timer_label.grid(row=6,column=0, columnspan=2,pady=12)
 
@@ -63,10 +61,6 @@ class Begyujtas:
         self.status_label.grid(row=8,column=0, columnspan=2,pady=8)
 
         self.root.protocol("WM_DELETE_WINDOW",self.ablak_bezarasa)
-
-        self.json_fajl=Path(__file__).with_name("hofigyelo.json")
-        self.saved_data=self.adatok_betoltese()
-
 
 if __name__ == "__main__":
     root = tk.Tk()
