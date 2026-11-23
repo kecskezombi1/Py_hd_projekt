@@ -1,21 +1,17 @@
 import asyncio
 import logging
 import math
-import threading
 import time
 from encodings import utf_8
 import winsound
 import json
 from pathlib import Path
 from tkinter import ttk, messagebox
-import main
 import tkinter as tk
 from desktop_notifier import DesktopNotifier
+import main
 
 logging.basicConfig(filename=Path(__file__).with_name("hofigyelo.log") ,level=logging.INFO, format='%(asctime)s : %(message)s',encoding='utf-8')
-class Begyujtas:
-    def __init__(self,root):
-        self.root=root
 
 class Begyujtas(main.Begyujtas):
     def __init__(self, root):
@@ -57,8 +53,8 @@ class Begyujtas(main.Begyujtas):
             "lakasho":lakashofok
         }
 
-        self.saved_data["futesek"].append(new_event_house)
-        self.saved_data()
+        self.saved_data()["futesek"].append(new_event_house)
+        self.saved_data
 
     def folytatas(self):
         if not self.active or not self.ellenorzesre_var:
@@ -67,14 +63,14 @@ class Begyujtas(main.Begyujtas):
         if adat is None:
             return
         self.naplozas(f"Ellenőrizve | Kazán: {adat[0]} °C | " f"Lakás: {adat[1]} °C")
-        self.saved_data["beallitasok"]["ertesitesi_perc"] = perc
-
+        self.meres_rogzitese
 
         self.ellenorzesre_var = False
 
         self.folytatas_btn.config(state="disabled")
         self.vizho_megadas.config(state="readonly")
         self.hofok_megadas.config(state="readonly")
+        self.ido_megadas.config(state="readonly")
 
         self.status_label.config(text="Állapot: Figyelés folyamatban")
 
@@ -174,6 +170,7 @@ class Begyujtas(main.Begyujtas):
             entry.config(state="normal")
             entry.delete(0, tk.END)
 
+        self.ido_megadas.config(state="normal")
         self.folytatas_btn.config(state="normal")
         self.naplozas("Ellenőrzési emlékeztető lejárt")
         self.ertesites()
@@ -220,7 +217,7 @@ class Begyujtas(main.Begyujtas):
 
         self.status_label.config(text="Állapot: Új adatokra vár")
 
-        for entry in (self.vizho_megadas,self.hofok_megadas):
+        for entry in (self.vizho_megadas,self.hofok_megadas,self.ido_megadas):
             entry.config(state="normal")
             entry.delete(0, tk.END)
 

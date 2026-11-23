@@ -2,7 +2,7 @@ import asyncio
 import threading
 import tkinter as tk
 from pathlib import Path
-from tkinter import ttk, messagebox
+from tkinter import ttk
 import hofigyelo_modul_HD as hd
 
 class Begyujtas:
@@ -12,11 +12,7 @@ class Begyujtas:
         self.root.title("Hőfigyelő - MTMACQ")
         self.root.resizable(False, False)
 
-
-        style = ttk.Style()
-        style.configure("cim.TLabel",foreground="black", font=("Arial", 15, "bold"),anchor="center",padding=15)
-
-        self.cim=ttk.Label(self.root,text="Hőfigyelő",style="cim.TLabel")
+        self.cim=ttk.Label(self.root,text="Hőfigyelő",font=("Arial", 15, "bold"),anchor="center",padding=15)
         self.cim.grid(row=0,column=0,columnspan=2,sticky="ew")
 
         self.active=False
@@ -69,7 +65,7 @@ class Begyujtas:
         self.root.protocol("WM_DELETE_WINDOW",self.ablak_bezarasa)
 
         self.json_fajl=Path(__file__).with_name("hofigyelo.json")
-        self.saved_data=hd.Begyujtas.adatok_betoltese
+        self.saved_data=self.adatok_betoltese()
 
 
 if __name__ == "__main__":
