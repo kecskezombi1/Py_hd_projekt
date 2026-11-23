@@ -97,7 +97,7 @@ python main.py
 6. Rögzítsük az új hőmérsékleti értékeket, és nyomjuk meg a **Folytatás** gombot.
 7. A figyelés lezárásához használjuk a **Vége** gombot.
 
-## Eseménynapló és továbbfejlesztés
+## Eseménynapló
 
 A `logging` modul a `hofigyelo.log` fájlban rögzíti többek között a figyelés indítását, az ellenőrzési értesítéseket, a megadott hőmérsékleteket és a leállítást.
 zést, a gyártói előírásokat vagy a megfelelő biztonsági berendezéseket. Az alapértelmezett 15 perces időköz nem jelent biztonságos ellenőrzési gyakoriságot minden kazánhoz.
