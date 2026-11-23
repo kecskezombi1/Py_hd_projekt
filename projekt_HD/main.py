@@ -27,7 +27,7 @@ class Begyujtas:
         self.notification_thread = threading.Thread(target=self.notification_worker, daemon=True)
         self.notification_thread.start()
 
-        self.start_btn=tk.Button(self.root,text="Begyujtás",command=self.start_btn_clicked)
+        self.start_btn=tk.Button(self.root,text="Begyújtás",command=self.start_btn_clicked)
         self.start_btn.grid(row=1,column=0,columnspan=2,pady=10)
 
         self.end_btn=tk.Button(self.root,text="Vége",command=self.end_btn_clicked,state="disabled")
