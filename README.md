@@ -87,7 +87,7 @@ Indítás a projekt mappájában:
 python main.py
 ```
 
-## Használat
+## Használat 
 
 1. Indítsuk el az alkalmazást.
 2. Adjuk meg a kazán vízhőmérsékletét és a lakás hőmérsékletét Celsius-fokban.
